@@ -4,16 +4,16 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:sessions][:email].downcase)
+    user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       log_in(user)
+      redirect_to posts_url
     end
   end
 
   def delete
-    user.forget
-    cookies.delete(:user_id)
-    cookies.delete(:remember_token)
+    log_out
+    redirect_to posts_url
   end
 
 end
